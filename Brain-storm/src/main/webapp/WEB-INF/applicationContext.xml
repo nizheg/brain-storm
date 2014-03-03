@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<jee:jndi-lookup id="dataSource" jndi-name="java:/comp/env/jdbc/postgres" />
+
+	<bean id="wordDao" class="me.nizheg.repository.impl.JdbcWordDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="movieDao" class="me.nizheg.repository.impl.JdbcMovieDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="tarkService" class="me.nizheg.service.SimpleTarkService">
+		<property name="symbolFilter" value="[^а-я]" />
+	</bean>
+
+	<bean id="anagramService" class="me.nizheg.service.SimpleAnagramService">
+		<property name="symbolFilter" value="[^а-я]" />
+		<property name="wordDao" ref="wordDao" />
+	</bean>
+
+	<bean id="gapoifikaService" class="me.nizheg.service.SimpleGapoifikaService">
+		<property name="symbolFilter" value="[^а-яА-Я]" />
+		<property name="wordDao" ref="movieDao" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<aop:config>
+		<aop:advisor pointcut="execution(* me.nizheg.repository.*Dao.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="save*" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="locations"> <list> <value>classpath:*</value> </list> </property> 
+		</bean -->
+
+</beans>
