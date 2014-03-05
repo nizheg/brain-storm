@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class JdbcMovieDao implements MovieDao {
 
 	private JdbcTemplate template;
+	private final MovieMapper movieMapper = new MovieMapper();
 
 	public void setDataSource(DataSource dataSource) {
 		this.template = new JdbcTemplate(dataSource);
@@ -32,33 +33,32 @@ public class JdbcMovieDao implements MovieDao {
 	}
 
 	@Override
-	public void saveWord(Word word) {
+	public Word saveWord(Word word) {
 		throw new UnsupportedOperationException();
 
 	}
 
 	@Override
 	public List<Movie> searchByMask(String mask) {
-		return template.query("SELECT id, title FROM movie WHERE title like ?", new Object[] { mask },
-				new RowMapper<Movie>() {
-
-					@Override
-					public Movie mapRow(ResultSet rs, int rowNum) throws SQLException {
-						String value = rs.getString("title");
-						Long id = rs.getLong("id");
-						return new Movie(id, value);
-					}
-
-				});
+		return template.query("SELECT id, title FROM movie WHERE title like ?", new Object[] { mask }, movieMapper);
 	}
 
 	@Override
-	public List<? extends Word> getAnagrams(String value) {
+	public List<? extends Word> getAnagrams(String value, Integer length) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public List<? extends Word> getAccurateAnagrams(String value) {
 		throw new UnsupportedOperationException();
+	}
+
+	private static class MovieMapper implements RowMapper<Movie> {
+		@Override
+		public Movie mapRow(ResultSet rs, int rowNum) throws SQLException {
+			String value = rs.getString("title");
+			Long id = rs.getLong("id");
+			return new Movie(id, value);
+		}
 	}
 }

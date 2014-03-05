@@ -29,11 +29,37 @@ public class SimpleAnagramService {
 	}
 
 	public List<String> getAnagrams(String sequence) {
-		sequence = sequence.toLowerCase().replaceAll(symbolFilter, "");
+		Integer length = null;
+		if (sequence.contains("*")) {
+			length = sequence.length();
+			sequence = sequence.replace("*", "");
+		}
+
+		return getAnagrams(sequence, length);
+	}
+
+	public List<String> getAccurateAnagrams(String sequence) {
+		sequence = prepareSequence(sequence);
 		if (sequence.isEmpty()) {
 			return Collections.emptyList();
 		}
-		List<? extends Word> anagramWords = wordDao.getAnagrams(sequence);
+		return convertToString(wordDao.getAccurateAnagrams(sequence));
+	}
+
+	public List<String> getAnagrams(String sequence, Integer length) {
+		sequence = prepareSequence(sequence);
+		if (sequence.isEmpty()) {
+			return Collections.emptyList();
+		}
+		return convertToString(wordDao.getAnagrams(sequence, length));
+	}
+
+	private String prepareSequence(String sequence) {
+		sequence = sequence.toLowerCase().replaceAll(symbolFilter, "");
+		return sequence;
+	}
+
+	private List<String> convertToString(List<? extends Word> anagramWords) {
 		List<String> anagrams = new ArrayList<String>(anagramWords.size());
 		for (Word word : anagramWords) {
 			anagrams.add(word.getValue());

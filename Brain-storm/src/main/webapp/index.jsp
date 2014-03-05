@@ -8,6 +8,7 @@
 </head>
 <body>
 	<a href="<c:url value="/tark" />" >Таркусограммы</a><br>
-	<a href="<c:url value="/gapoifika"/>">ГаПоИФиКа</a>
+	<a href="<c:url value="/gapoifika"/>">ГаПоИФиКа</a><br>
+	<a href="<c:url value="/anagram"/>">Анаграммайзер</a>
 </body>
 </html>
