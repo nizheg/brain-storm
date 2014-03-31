@@ -27,6 +27,9 @@ div.fullwidth {
 <body>
 <a href="<c:url value="/"/>" style="float:right;">На главную</a>
 <br/>
+<c:out value="${firstSeq}"></c:out>
+&nbsp;=&nbsp;
+<c:out value="${secondSeq}"></c:out>
 
 	<form id="tark" action="/tark/diff" method="get">
 

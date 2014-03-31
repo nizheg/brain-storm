@@ -96,4 +96,42 @@ public class JdbcWordDao implements WordDao {
 			return new Word(id, value);
 		}
 	}
+
+	@Override
+	public List<? extends Word> getDismemberment(List<String[]> parts, boolean isAccurate) {
+		StringBuilder sqlBuilder = new StringBuilder();
+		sqlBuilder.append("SELECT DISTINCT id, nom_singl");
+		sqlBuilder.append("\nFROM word");
+		for (int i = 0; i < parts.size(); ++i) {
+			sqlBuilder.append(",");
+			sqlBuilder.append("\nunnest(ARRAY[");
+			StringBuilder piBuilder = new StringBuilder();
+			String[] subParts = parts.get(i);
+			for (int j = 0; j < subParts.length; ++j) {
+				if (piBuilder.length() > 0) {
+					piBuilder.append(",");
+				}
+				piBuilder.append("'" + subParts[j] + "'");
+			}
+			sqlBuilder.append(piBuilder.toString());
+			sqlBuilder.append("]) as p" + i);
+		}
+		sqlBuilder.append("\nWHERE ");
+		for (int i = 0; i < parts.size(); ++i) {
+			if (i > 0) {
+				sqlBuilder.append(" || ");
+			}
+			sqlBuilder.append("p" + i);
+		}
+		if (isAccurate) {
+			sqlBuilder.append(" = ");
+		} else {
+			sqlBuilder.append(" LIKE '%' || ");
+		}
+		sqlBuilder.append("nom_singl");
+		if (!isAccurate) {
+			sqlBuilder.append(" || '%'");
+		}
+		return template.query(sqlBuilder.toString(), wordMapper);
+	}
 }
