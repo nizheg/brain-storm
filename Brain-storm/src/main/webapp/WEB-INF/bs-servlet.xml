@@ -46,6 +46,7 @@
 			<map>
 				<entry key="#{wordType.id}" value-ref="wordType"/>
 				<entry key="#{movieType.id}" value-ref="movieType"/>
+				<entry key="#{bookType.id}" value-ref="bookType"/>
 			</map>
 		</property>
 	</bean>

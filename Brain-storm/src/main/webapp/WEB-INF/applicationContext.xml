@@ -17,11 +17,16 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	<bean id="bookDao" class="me.nizheg.repository.impl.JdbcBookDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 	<bean id="wordsDaoFactory" class="me.nizheg.repository.impl.JdbcWordDaoFactory">
 		<property name="dao">
 			<map>
 				<entry key="word" value-ref="wordDao"/>
 				<entry key="movie" value-ref="movieDao"/>
+				<entry key="book" value-ref="bookDao"/>
 			</map>
 		</property>
 	</bean>
@@ -54,7 +59,7 @@
 
 	<bean id="gapoifikaService" class="me.nizheg.service.SimpleGapoifikaService">
 		<property name="symbolFilter" value="[^а-яА-Я]" />
-		<property name="wordDao" ref="movieDao" />
+		<property name="wordDaoFactory" ref="wordsDaoFactory"/>
 	</bean>
 
 	<bean id="transactionManager"

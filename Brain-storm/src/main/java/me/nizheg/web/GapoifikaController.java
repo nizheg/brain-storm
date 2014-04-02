@@ -1,20 +1,22 @@
 package me.nizheg.web;
 
-import me.nizheg.service.SimpleGapoifikaService;
+import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import me.nizheg.service.SimpleGapoifikaService;
+import me.nizheg.web.annotation.WordTypeFilterable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("gapoifika")
+@WordTypeFilterable
 public class GapoifikaController {
 
-	private final Log logger = LogFactory.getLog(getClass());
 	@Autowired
 	private SimpleGapoifikaService gapoifikaService;
 
@@ -24,8 +26,11 @@ public class GapoifikaController {
 	}
 
 	@RequestMapping("calc")
-	public ModelAndView calculate(@RequestParam(value = "in", defaultValue = "") String in) {
-		return new ModelAndView("gapoifika", "results", gapoifikaService.calculate(in));
+	public String calculate(@RequestParam(value = "in", defaultValue = "") String in,
+			@RequestParam(value = "isAccurate", defaultValue = "false") Boolean isAccurate,
+			@ModelAttribute(WordTypeFilterAdvice.WORD_TYPE_VALUES_ATTRIBUTE) List<String> values, Model model) {
+		model.addAttribute("results", gapoifikaService.calculate(in, values, isAccurate));
+		return "gapoifika";
 	}
 
 }

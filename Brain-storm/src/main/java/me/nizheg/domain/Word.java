@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Word implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private final Long id;
 	private final String value;
 

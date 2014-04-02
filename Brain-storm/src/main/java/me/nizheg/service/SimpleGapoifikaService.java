@@ -1,23 +1,26 @@
 package me.nizheg.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import me.nizheg.domain.Word;
 import me.nizheg.repository.WordDao;
+import me.nizheg.repository.WordDaoFactory;
 
 public class SimpleGapoifikaService {
 
-	private WordDao wordDao;
+	private WordDaoFactory wordDaoFactory;
 	private String symbolFilter;
 
-	public WordDao getWordDao() {
-		return wordDao;
+	public void setWordDaoFactory(WordDaoFactory wordDaoFactory) {
+		this.wordDaoFactory = wordDaoFactory;
 	}
 
-	public void setWordDao(WordDao wordDao) {
-		this.wordDao = wordDao;
+	public Set<String> getSupportableWordTypes() {
+		return wordDaoFactory.getSupportableNames();
 	}
 
 	public String getSymbolFilter() {
@@ -28,7 +31,7 @@ public class SimpleGapoifikaService {
 		this.symbolFilter = wordFilter;
 	}
 
-	public List<String> calculate(String in) {
+	public List<String> calculate(String in, Collection<String> wordTypes, boolean isAccurate) {
 		if (symbolFilter != null) {
 			in = in.replaceAll(symbolFilter, "");
 		}
@@ -46,15 +49,15 @@ public class SimpleGapoifikaService {
 			partBuilder.append(Character.toLowerCase(ch));
 		}
 		parts.add(partBuilder.toString());
-		List<String> result = searchByMask(getAccurateMask(parts));
-		if (!result.isEmpty()) {
+		List<String> result = searchByMask(getAccurateMask(parts), wordTypes);
+		if (isAccurate || !result.isEmpty()) {
 			return result;
 		}
-		return searchByMask(getMaskWithoutWhitespaces(parts));
+		return searchByMask(getMaskWithoutWhitespaces(parts), wordTypes);
 	}
 
 	private String getMaskWithoutWhitespaces(List<String> parts) {
-		StringBuilder maskBuilder = new StringBuilder();
+		StringBuilder maskBuilder = new StringBuilder("%");
 		for (String part : parts) {
 			maskBuilder.append(part + "%");
 		}
@@ -62,11 +65,16 @@ public class SimpleGapoifikaService {
 		return mask;
 	}
 
-	private List<String> searchByMask(String mask) {
-		List<? extends Word> words = wordDao.searchByMask(mask);
+	private List<String> searchByMask(String mask, Collection<String> wordTypes) {
 		List<String> result = new ArrayList<String>();
-		for (Word word : words) {
-			result.add(word.getValue());
+		for (String wordType : wordTypes) {
+			WordDao dao;
+			if ((dao = wordDaoFactory.getDao(wordType)) != null) {
+				List<? extends Word> foundWords = dao.searchByMask(mask);
+				for (Word word : foundWords) {
+					result.add(word.getValue());
+				}
+			}
 		}
 		return result;
 	}

@@ -3,35 +3,28 @@ package me.nizheg.web;
 import java.util.List;
 
 import me.nizheg.service.SimpleSearchService;
-import me.nizheg.web.backing.WordTypeFilter;
+import me.nizheg.web.annotation.WordTypeFilterable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("search")
+@WordTypeFilterable
 public class SearchController {
-
-	private final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
 	private SimpleSearchService searchService;
-	@Autowired
-	private WordTypeFilter wordTypeFilter;
 
 	@RequestMapping
-	public ModelAndView get(@RequestParam(value = "in", defaultValue = "") String in,
-			@RequestParam(value = "wordType", required = false) List<String> values) {
-
-		ModelAndView model = new ModelAndView("search");
-		model.addAllObjects(wordTypeFilter.process(values));
-		model.addObject("results", searchService.search(in, values));
-		return model;
+	public String get(@RequestParam(value = "in", defaultValue = "") String in,
+			@ModelAttribute(WordTypeFilterAdvice.WORD_TYPE_VALUES_ATTRIBUTE) List<String> values, Model model) {
+		model.addAttribute("results", searchService.search(in, values));
+		return "search";
 	}
 
 }

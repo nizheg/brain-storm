@@ -29,9 +29,11 @@ div.fullwidth {
 	<br />
 
 	<form id="tark" action="/gapoifika/calc" method="get">
-		<input name="in" style="min-width: 200px;" />
-		 <input type="submit" value="Найти" />
-
+		<input name="in" style="min-width: 200px;" value="${param.in}">
+		 <input type="submit" value="Найти" /><br>
+		 <label><input type="checkbox" name="isAccurate" <c:if test="${not empty param.isAccurate}">checked</c:if>/>Искать только точные совпадения</label>
+		 <br>
+		 <%@include file="wordTypeFilter.jsp" %>
 	</form>
 	<br>
 	<c:forEach items="${results}" var="item">

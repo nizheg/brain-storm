@@ -17,7 +17,7 @@
 		<label for="in">Анаграмма</label><input id="in" name="in" style="min-width: 200px;" value="${param.in}"/>
 		<label for="length">Длина</label><input id="length" name="length" value="${param.length}"/>
 		<br/>
-		<label for="isAccurate">Точное совпадение</label><input type="checkbox" id="isAccurate" name="isAccurate" checked="${param.isAccurate}"/><br/>
+		<label for="isAccurate">Точное совпадение</label><input type="checkbox" id="isAccurate" name="isAccurate" <c:if test="${not empty param.isAccurate}">checked</c:if>/><br/>
 		<input type="submit" value="Найти" />
 	</form>
 	<br>
