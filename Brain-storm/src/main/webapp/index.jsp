@@ -10,6 +10,7 @@
 	<a href="<c:url value="/tark" />" >Таркусограммы</a><br>
 	<a href="<c:url value="/gapoifika"/>">ГаПоИФиКа</a><br>
 	<a href="<c:url value="/anagram"/>">Анаграммайзер</a><br>
-	Расчлененки по&nbsp;<a href="<c:url value="/dismember/movie"/>">фильмам</a>, <a href="<c:url value="/dismember/word"/>">словам</a>
+	Расчлененки по&nbsp;<a href="<c:url value="/dismember/movie"/>">фильмам</a>, <a href="<c:url value="/dismember/word"/>">словам</a><br>
+	<a href="<c:url value="/search"/>">Поиск по маске</a><br>
 </body>
 </html>

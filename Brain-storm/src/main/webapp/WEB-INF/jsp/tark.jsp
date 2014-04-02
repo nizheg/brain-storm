@@ -27,9 +27,11 @@ div.fullwidth {
 <body>
 <a href="<c:url value="/"/>" style="float:right;">На главную</a>
 <br/>
-<c:out value="${firstSeq}"></c:out>
-&nbsp;=&nbsp;
-<c:out value="${secondSeq}"></c:out>
+<c:if test="${empty firstElemComplement and empty secondElemComplement and (not empty firstSeq) and (not empty secondSeq)}">
+	<c:out value="${firstSeq}"></c:out>
+	&nbsp;=&nbsp;
+	<c:out value="${secondSeq}"></c:out>
+</c:if>
 
 	<form id="tark" action="/tark/diff" method="get">
 

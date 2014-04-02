@@ -53,11 +53,9 @@ public class SimpleDismemberService {
 		try {
 			while ((line = reader.readLine()) != null) {
 				line = line.trim();
-				System.out.println(line);
 				Pattern pattern = Pattern.compile(linePattern);
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.matches()) {
-					System.out.println("Matches");
 					String word = matcher.group(1);
 					Integer count = Integer.valueOf(matcher.group(2));
 					parts.add(new Part(word, count));

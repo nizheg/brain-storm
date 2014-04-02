@@ -25,4 +25,28 @@
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	
+	<bean id="wordType" class="me.nizheg.web.backing.WordType">
+		<constructor-arg name="id" value="word" />
+		<constructor-arg name="name" value="Слово" />
+	</bean>
+	
+	<bean id="movieType" class="me.nizheg.web.backing.WordType">
+		<constructor-arg name="id" value="movie" />
+		<constructor-arg name="name" value="Фильм" />
+	</bean>
+	
+	<bean id="bookType" class="me.nizheg.web.backing.WordType">
+		<constructor-arg name="id" value="book" />
+		<constructor-arg name="name" value="Книга" />
+	</bean>
+	
+	<bean id="wordTypeFilter" class="me.nizheg.web.backing.WordTypeFilter">
+		<property name="wordTypes">
+			<map>
+				<entry key="#{wordType.id}" value-ref="wordType"/>
+				<entry key="#{movieType.id}" value-ref="movieType"/>
+			</map>
+		</property>
+	</bean>
 </beans>

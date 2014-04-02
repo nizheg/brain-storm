@@ -16,6 +16,20 @@
 	<bean id="movieDao" class="me.nizheg.repository.impl.JdbcMovieDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<bean id="wordsDaoFactory" class="me.nizheg.repository.impl.JdbcWordDaoFactory">
+		<property name="dao">
+			<map>
+				<entry key="word" value-ref="wordDao"/>
+				<entry key="movie" value-ref="movieDao"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="searchService" class="me.nizheg.service.SimpleSearchService">
+		<property name="symbolFilter" value="[^а-я\*%\s]" />
+		<property name="wordDaoFactory" ref="wordsDaoFactory"/>
+	</bean>
 
 	<bean id="tarkService" class="me.nizheg.service.SimpleTarkService">
 		<property name="symbolFilter" value="[^а-я]" />

@@ -18,7 +18,7 @@
 		<label for="length">Длина</label><input id="length" name="length" value="${param.length}"/>
 		<br/>
 		<label for="isAccurate">Точное совпадение</label><input type="checkbox" id="isAccurate" name="isAccurate" checked="${param.isAccurate}"/><br/>
-		<input type="submit" value="Посчитать" />
+		<input type="submit" value="Найти" />
 	</form>
 	<br>
 	<c:forEach items="${results}" var="item">

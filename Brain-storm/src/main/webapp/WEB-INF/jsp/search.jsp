@@ -7,31 +7,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ГаПоИФиКа</title>
-<style type="text/css">
-div.tarktext {
-	width: 48%;
-	float: left;
-	position: relative;
-	padding: 1px 1%;
-}
-
-div.fullwidth {
-	width: 98%;
-	float: left;
-	position: relative;
-	padding: 1px 1%;
-}
-</style>
+<title>Поиск по маске</title>
 </head>
 <body>
 	<a href="<c:url value="/"/>" style="float: right;">На главную</a>
 	<br />
 
-	<form id="tark" action="/gapoifika/calc" method="get">
-		<input name="in" style="min-width: 200px;" />
-		 <input type="submit" value="Найти" />
-
+	<form id="tark" action="/search" method="get">
+		<label>Маска&nbsp;<input id="in" name="in" style="min-width: 200px;" value="${param.in}"/></label>
+		<input type="submit" value="Найти" />
+		<br/>
+		<div>
+		<%@include file="wordTypeFilter.jsp" %>
+		</div>
 	</form>
 	<br>
 	<c:forEach items="${results}" var="item">
