@@ -52,7 +52,7 @@ public class SimpleDismemberService {
 		String line;
 		try {
 			while ((line = reader.readLine()) != null) {
-				line = line.trim();
+				line = line.trim().toLowerCase();
 				Pattern pattern = Pattern.compile(linePattern);
 				Matcher matcher = pattern.matcher(line);
 				if (matcher.matches()) {
@@ -80,9 +80,10 @@ public class SimpleDismemberService {
 			return Collections.emptyList();
 		}
 		List<? extends Word> words = wordDao.getDismemberment(partsOfParts, true);
-		if (words.isEmpty()) {
-			words = wordDao.getDismemberment(partsOfParts, false);
-		}
+		/*
+		 * if (words.isEmpty()) { words = wordDao.getDismemberment(partsOfParts,
+		 * false); }
+		 */
 		return convertToString(words);
 	}
 

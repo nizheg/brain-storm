@@ -27,7 +27,7 @@ div.fullwidth {
 <body>
 <a href="<c:url value="/"/>" style="float:right;">На главную</a>
 <br/>
-<c:if test="${empty firstElemComplement and empty secondElemComplement and (not empty firstSeq) and (not empty secondSeq)}">
+<c:if test="${empty firstElemComplement and empty secondElemComplement and (not empty firstSeq) and (not empty secondSeq) and empty anagrams}">
 	<c:out value="${firstSeq}"></c:out>
 	&nbsp;=&nbsp;
 	<c:out value="${secondSeq}"></c:out>

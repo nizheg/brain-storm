@@ -22,7 +22,7 @@ public class GapoifikaController {
 
 	@RequestMapping
 	public String get() {
-		return "gapoifika";
+		return "redirect:/gapoifika/calc?isAccurate=on&wordType=movie";
 	}
 
 	@RequestMapping("calc")

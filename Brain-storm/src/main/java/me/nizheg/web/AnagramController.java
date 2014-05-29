@@ -23,7 +23,7 @@ public class AnagramController {
 
 	@RequestMapping
 	public String get() {
-		return "anagram";
+		return "redirect:/anagram/calc?isAccurate=on";
 	}
 
 	@RequestMapping("calc")
