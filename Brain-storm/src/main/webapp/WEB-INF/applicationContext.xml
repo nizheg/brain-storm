@@ -36,6 +36,12 @@
 		<property name="wordDaoFactory" ref="wordsDaoFactory"/>
 	</bean>
 
+    <bean id="swedeService" class="me.nizheg.service.SimpleSwedeService">
+   		<property name="symbolFilter" value="[^а-я\*%\s]" />
+   		<property name="wordDaoFactory" ref="wordsDaoFactory"/>
+        <property name="simpleSearchService" ref="searchService"/>
+   	</bean>
+
 	<bean id="tarkService" class="me.nizheg.service.SimpleTarkService">
 		<property name="symbolFilter" value="[^а-я]" />
 	</bean>

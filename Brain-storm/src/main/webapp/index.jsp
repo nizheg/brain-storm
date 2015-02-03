@@ -12,7 +12,7 @@
 	<a href="<c:url value="/anagram"/>">Анаграммайзер</a><br>
 	Расчлененки по&nbsp;<a href="<c:url value="/dismember/movie"/>">фильмам</a>, <a href="<c:url value="/dismember/word"/>">словам</a><br>
 	<a href='<c:url value="/search"><c:param name="wordType" value="word"/></c:url>'>Поиск по маске</a><br>
-	
+    <a href='<c:url value="/swedes"><c:param name="wordType" value="word"/></c:url>'>Брюквы</a><br>
 	
 </body>
 </html>
