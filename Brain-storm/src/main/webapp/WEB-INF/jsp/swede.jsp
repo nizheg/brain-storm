@@ -18,7 +18,7 @@
         <input type="submit" value="Найти" />
 		<br/>
 		<div>
-        <label><input name="back" type="radio">&nbsp;Обратные брюквы</label><br/>
+        <label><input type="checkbox" id="back" name="back" <c:if test="${not empty param.back}">checked</c:if>/>&nbsp;Обратные брюквы</label><br/>
 		<%@include file="wordTypeFilter.jsp" %>
 		</div>
 	</form>
