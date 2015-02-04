@@ -1,17 +1,15 @@
 package me.nizheg.repository.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import me.nizheg.domain.Book;
 import me.nizheg.domain.Word;
 import me.nizheg.repository.MovieDao;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class JdbcBookDao implements MovieDao {
 
@@ -55,13 +53,26 @@ public class JdbcBookDao implements MovieDao {
 
 	// FIXME: implement arrays as type and filter
 	@Override
-	public List<? extends Word> getDismemberment(List<String[]> parts, boolean isAccurate) {
+	public List<? extends Word> getDismemberment(List<String[]> parts, int length) {
 
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append("SELECT DISTINCT id, title");
-		sqlBuilder.append("\nFROM book");
+        sqlBuilder.append("SELECT id, title FROM book WHERE regexp_replace(title, '[^а-я]', '', 'g') IN (");
+        sqlBuilder.append("\nSELECT regexp_replace(title, '[^а-я]', '', 'g')");
+        sqlBuilder.append("\nFROM book");
+        sqlBuilder.append("\nWHERE length(regexp_replace(title, '[^а-я]', '', 'g')) = ?");
+        sqlBuilder.append("\nINTERSECT");
+        sqlBuilder.append("\nSELECT ");
+        for (int i = 0; i < parts.size(); ++i) {
+            if (i > 0) {
+                sqlBuilder.append(" || ");
+            }
+            sqlBuilder.append("p" + i);
+        }
+        sqlBuilder.append("\nFROM");
 		for (int i = 0; i < parts.size(); ++i) {
-			sqlBuilder.append(",");
+            if (i > 0) {
+                sqlBuilder.append(",");
+            }
 			sqlBuilder.append("\nunnest(ARRAY[");
 			StringBuilder piBuilder = new StringBuilder();
 			String[] subParts = parts.get(i);
@@ -74,22 +85,8 @@ public class JdbcBookDao implements MovieDao {
 			sqlBuilder.append(piBuilder.toString());
 			sqlBuilder.append("]) as p" + i);
 		}
-		sqlBuilder.append("\nWHERE regexp_replace(title, '[^а-я]', '', 'g')");
-		if (isAccurate) {
-			sqlBuilder.append(" = ");
-		} else {
-			sqlBuilder.append(" LIKE '%' || ");
-		}
-		for (int i = 0; i < parts.size(); ++i) {
-			if (i > 0) {
-				sqlBuilder.append(" || ");
-			}
-			sqlBuilder.append("p" + i);
-		}
-		if (!isAccurate) {
-			sqlBuilder.append(" || '%'");
-		}
-		return template.query(sqlBuilder.toString(), bookMapper);
+        sqlBuilder.append(")");
+		return template.query(sqlBuilder.toString(), new Object[]{length}, bookMapper);
 	}
 
 	private static class BookMapper implements RowMapper<Book> {

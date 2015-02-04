@@ -1,26 +1,24 @@
 package me.nizheg.service;
 
+import me.nizheg.domain.Word;
+import me.nizheg.repository.WordDao;
+import me.nizheg.repository.WordDaoFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.nizheg.domain.Word;
-import me.nizheg.repository.WordDao;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class SimpleDismemberService {
 
 	private final Log logger = LogFactory.getLog(getClass());
 	private String symbolFilter;
 	private String linePattern;
-	private WordDao wordDao;
+	private WordDaoFactory wordDaoFactory;
 
 	public String getSymbolFilter() {
 		return symbolFilter;
@@ -38,18 +36,19 @@ public class SimpleDismemberService {
 		this.linePattern = linePattern;
 	}
 
-	public WordDao getWordDao() {
-		return this.wordDao;
-	}
+    public WordDaoFactory getWordDaoFactory() {
+        return wordDaoFactory;
+    }
 
-	public void setWordDao(WordDao wordDao) {
-		this.wordDao = wordDao;
-	}
+    public void setWordDaoFactory(WordDaoFactory wordDaoFactory) {
+        this.wordDaoFactory = wordDaoFactory;
+    }
 
-	public List<String> calculateMovie(String dismember) {
+    public Set<String> calculate(String dismember, Collection<String> wordTypes) {
 		BufferedReader reader = new BufferedReader(new StringReader(dismember));
 		List<Part> parts = new ArrayList<Part>();
 		String line;
+        int totalCount = 0;
 		try {
 			while ((line = reader.readLine()) != null) {
 				line = line.trim().toLowerCase();
@@ -59,12 +58,13 @@ public class SimpleDismemberService {
 					String word = matcher.group(1);
 					Integer count = Integer.valueOf(matcher.group(2));
 					parts.add(new Part(word, count));
-				}
+                    totalCount += count;
+                }
 			}
 		} catch (NumberFormatException ex) {
-			logger.error("Error during parsing dismbmeber " + dismember, ex);
+			logger.error("Error during parsing dismember " + dismember, ex);
 		} catch (IOException ex) {
-			logger.error("Error during parsing dismbmeber " + dismember, ex);
+			logger.error("Error during parsing dismember " + dismember, ex);
 		}
 		List<String[]> partsOfParts = new ArrayList<String[]>();
 		for (Part part : parts) {
@@ -77,22 +77,26 @@ public class SimpleDismemberService {
 			partsOfParts.add(subParts.toArray(new String[subParts.size()]));
 		}
 		if (partsOfParts.isEmpty()) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
-		List<? extends Word> words = wordDao.getDismemberment(partsOfParts, true);
-		/*
-		 * if (words.isEmpty()) { words = wordDao.getDismemberment(partsOfParts,
-		 * false); }
-		 */
-		return convertToString(words);
+
+        Set<String> result = new TreeSet<String>();
+        for (String wordType : wordTypes) {
+            WordDao dao;
+            if ((dao = wordDaoFactory.getDao(wordType)) != null) {
+                List<? extends Word> foundWords = dao.getDismemberment(partsOfParts, totalCount);
+                result.addAll(convertToString(foundWords));
+            }
+        }
+		return result;
 	}
 
-	private List<String> convertToString(List<? extends Word> anagramWords) {
-		List<String> anagrams = new ArrayList<String>(anagramWords.size());
-		for (Word word : anagramWords) {
-			anagrams.add(word.getValue());
+	private List<String> convertToString(List<? extends Word> words) {
+		List<String> result = new ArrayList<String>(words.size());
+		for (Word word : words) {
+            result.add(word.getValue());
 		}
-		return anagrams;
+		return result;
 	}
 
 	private static class Part {

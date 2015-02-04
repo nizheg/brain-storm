@@ -18,6 +18,6 @@ public interface WordDao {
 
 	List<? extends Word> getAccurateAnagrams(String value);
 
-	List<? extends Word> getDismemberment(List<String[]> parts, boolean isAccurate);
+	List<? extends Word> getDismemberment(List<String[]> parts, int length);
 
 }

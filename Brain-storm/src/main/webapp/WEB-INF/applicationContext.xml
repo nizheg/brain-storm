@@ -46,16 +46,10 @@
 		<property name="symbolFilter" value="[^а-я]" />
 	</bean>
 	
-	<bean id="wordDismemberService" class="me.nizheg.service.SimpleDismemberService">
+	<bean id="dismemberService" class="me.nizheg.service.SimpleDismemberService">
 		<property name="symbolFilter" value="[^а-я]" />
 		<property name="linePattern" value="([а-яА-Я]*)\s*\(?([0-9]*)\)?"/>
-		<property name="wordDao" ref="wordDao" />
-	</bean>
-	
-	<bean id="movieDismemberService" class="me.nizheg.service.SimpleDismemberService">
-		<property name="symbolFilter" value="[^а-я]" />
-		<property name="linePattern" value="([а-яА-Я]*)\s*\(?([0-9]*)\)?"/>
-		<property name="wordDao" ref="movieDao" />
+        <property name="wordDaoFactory" ref="wordsDaoFactory"/>
 	</bean>
 
 	<bean id="anagramService" class="me.nizheg.service.SimpleAnagramService">

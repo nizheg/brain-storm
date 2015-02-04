@@ -13,10 +13,14 @@
 	<a href="<c:url value="/"/>" style="float: right;">На главную</a>
 	<br />
 
-	<form id="dismember" action="/dismember/${path}/calc" method="get">
+	<form id="dismember" action="dismember" method="get">
 		<textarea id="dismember-val" name="val" tabindex="1"
 				style="width: 100%;" rows="10"><c:out value="${param.val}"/></textarea>
 		<input type="submit" value="Посчитать" />
+        <br/>
+        <div>
+      		<%@include file="wordTypeFilter.jsp" %>
+      	</div>
 	</form>
 	<br>
 	<c:forEach items="${results}" var="item">
