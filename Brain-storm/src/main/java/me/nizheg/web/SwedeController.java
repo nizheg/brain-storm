@@ -21,9 +21,10 @@ public class SwedeController {
 
     @RequestMapping
     public String get(@RequestParam(value = "in", defaultValue = "") String in,
-        @RequestParam(value = "back", defaultValue = "false") boolean isBack,
+        @RequestParam(value = "from", defaultValue = "2") int from,
+        @RequestParam(value = "to", defaultValue = "1") int to,
         @ModelAttribute(WordTypeFilterAdvice.WORD_TYPE_VALUES_ATTRIBUTE) List<String> values, Model model) {
-        model.addAttribute("results", swedeService.search(in, isBack, values));
+        model.addAttribute("results", swedeService.search(in, from, to, values));
         return "swede";
     }
 

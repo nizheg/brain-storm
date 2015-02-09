@@ -2,10 +2,7 @@ package me.nizheg.service;
 
 import me.nizheg.repository.WordDaoFactory;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Original Author: Nikolay Zhegalin
@@ -43,23 +40,19 @@ public class SimpleSwedeService {
         this.simpleSearchService = simpleSearchService;
     }
 
-    public Set<String> search(String word, boolean isBack, Collection<String> wordTypes) {
+    public Set<String> search(String word, int from, int to, Collection<String> wordTypes) {
         word = prepareSequence(word);
-        if (word.isEmpty() || wordTypes == null || wordTypes.isEmpty()) {
+        if (word.isEmpty() || wordTypes == null || wordTypes.isEmpty() || from < 1 || to < 1) {
             return Collections.emptySet();
         }
 
         Set<String> result = new TreeSet<String>();
-        if (isBack) {
-            for (int i = 0; i < word.length(); i++) {
-                String mask = word.substring(0, i) + "**" + word.substring(i + 1, word.length());
-                result.addAll(simpleSearchService.search(mask, wordTypes));
-            }
-        } else {
-            for (int i = 0; i < word.length() - 1; i++) {
-                String mask = word.substring(0, i) + "*" + word.substring(i + 2, word.length());
-                result.addAll(simpleSearchService.search(mask, wordTypes));
-            }
+        char[] replacementSequence = new char[to];
+        Arrays.fill(replacementSequence, '*');
+        String replacement = new String(replacementSequence);
+        for (int i = 0; i <= word.length() - from; i++) {
+            String mask = word.substring(0, i) + replacement + word.substring(i + from, word.length());
+            result.addAll(simpleSearchService.search(mask, wordTypes));
         }
         return result;
     }

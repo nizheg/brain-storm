@@ -15,10 +15,11 @@
 
 	<form id="swede" action="swedes" method="get">
 		<label>Слово&nbsp;<input id="in" name="in" style="min-width: 200px;" value="${param.in}"/></label>
+        <label>Из&nbsp;<input name="from" style="width: 50px;" value="<c:if test="${empty param.from}">2</c:if>${param.from}"/></label>
+        <label>&nbsp;в&nbsp;<input name="to" style="width: 50px;" value="<c:if test="${empty param.to}">1</c:if>${param.to}"/></label>
         <input type="submit" value="Найти" />
 		<br/>
 		<div>
-        <label><input type="checkbox" id="back" name="back" <c:if test="${not empty param.back}">checked</c:if>/>&nbsp;Обратные брюквы</label><br/>
 		<%@include file="wordTypeFilter.jsp" %>
 		</div>
 	</form>
