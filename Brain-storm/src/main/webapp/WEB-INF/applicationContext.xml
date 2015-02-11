@@ -62,6 +62,9 @@
 		<property name="wordDaoFactory" ref="wordsDaoFactory"/>
 	</bean>
 
+    <bean id="simpleBrailleService" class="me.nizheg.service.SimpleBrailleService">
+    </bean>
+
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
