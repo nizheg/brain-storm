@@ -17,14 +17,14 @@
         <table>
             <tr>
                 <td><input name="in1" type="checkbox" <c:if test="${not empty param.in1}">checked</c:if>/></td>
-                <td><input name="in2" type="checkbox" <c:if test="${not empty param.in2}">checked</c:if>/></td>
-            </tr>
-            <tr>
-                <td><input name="in3" type="checkbox" <c:if test="${not empty param.in3}">checked</c:if>/></td>
                 <td><input name="in4" type="checkbox" <c:if test="${not empty param.in4}">checked</c:if>/></td>
             </tr>
             <tr>
+                <td><input name="in2" type="checkbox" <c:if test="${not empty param.in2}">checked</c:if>/></td>
                 <td><input name="in5" type="checkbox" <c:if test="${not empty param.in5}">checked</c:if>/></td>
+            </tr>
+            <tr>
+                <td><input name="in3" type="checkbox" <c:if test="${not empty param.in3}">checked</c:if>/></td>
                 <td><input name="in6" type="checkbox" <c:if test="${not empty param.in6}">checked</c:if>/>
                 </td>
             </tr>
@@ -34,15 +34,15 @@
 	</form>
 	<br>
 
-    <span>Прямая:</span><br/>
+    <span>Прямая:</span>
     <c:forEach items="${results}" var="item">
-    	<span></spa><c:out value="${item}"/></span>&nbsp;
-    </c:forEach>
+    	<span><c:out value="${item}"/></span>&nbsp;
+    </c:forEach><br/>
 
-    <span>Инвертированная:</span><br/>
+    <span>Инвертированная:</span>
     <c:forEach items="${invertedResults}" var="item">
-        <span></spa><c:out value="${item}"/></span>&nbsp;
-    </c:forEach>
+        <span><c:out value="${item}"/></span>&nbsp;
+    </c:forEach><br/>
 
 	<a href="<c:url value="/"/>" style="float: right;">На главную</a>
 
