@@ -26,7 +26,8 @@ public class BrailleController {
         Model model) {
         boolean[] in = {in1, in2, in3, in4, in5, in6};
         model.addAttribute("results", simpleBrailleService.getAllPossibleVariants(in));
-        model.addAttribute("invertedResults", simpleBrailleService.getAllPossibleVariants(simpleBrailleService.invert(in)));
+        model.addAttribute("invertedResults",
+            simpleBrailleService.getAllPossibleVariants(simpleBrailleService.invert(in)));
         return "braille";
     }
 }

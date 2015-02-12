@@ -1,9 +1,8 @@
 package me.nizheg.service;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -17,9 +16,9 @@ public class SimpleBrailleService {
     Map<Byte, Character> russianAlphabet = new HashMap<Byte, Character>();
     Map<Byte, Character> englishAlphabet = new HashMap<Byte, Character>();
     Map<Byte, Character> numbers = new HashMap<Byte, Character>();
-    Map<Byte, Character> symbols = new HashMap<Byte, Character>();    
+    Map<Byte, Character> symbols = new HashMap<Byte, Character>();
 
-    public SimpleBrailleService(){
+    public SimpleBrailleService() {
         russianAlphabet.put(Byte.valueOf("100000", 2), 'а');
         russianAlphabet.put(Byte.valueOf("110000", 2), 'б');
         russianAlphabet.put(Byte.valueOf("010111", 2), 'в');
@@ -80,18 +79,18 @@ public class SimpleBrailleService {
         englishAlphabet.put(Byte.valueOf("101101", 2), 'x');
         englishAlphabet.put(Byte.valueOf("101111", 2), 'y');
         englishAlphabet.put(Byte.valueOf("101011", 2), 'z');
-        
+
         numbers.put(Byte.valueOf("010110", 2), '0');
-        numbers.put(Byte.valueOf("100000", 2), '1');                        
-        numbers.put(Byte.valueOf("110000", 2), '2');                        
-        numbers.put(Byte.valueOf("100100", 2), '3');                                                                        
-        numbers.put(Byte.valueOf("100110", 2), '4');                        
-        numbers.put(Byte.valueOf("100010", 2), '5');                        
-        numbers.put(Byte.valueOf("110100", 2), '6');                        
-        numbers.put(Byte.valueOf("110110", 2), '7');                        
-        numbers.put(Byte.valueOf("110010", 2), '8');                        
+        numbers.put(Byte.valueOf("100000", 2), '1');
+        numbers.put(Byte.valueOf("110000", 2), '2');
+        numbers.put(Byte.valueOf("100100", 2), '3');
+        numbers.put(Byte.valueOf("100110", 2), '4');
+        numbers.put(Byte.valueOf("100010", 2), '5');
+        numbers.put(Byte.valueOf("110100", 2), '6');
+        numbers.put(Byte.valueOf("110110", 2), '7');
+        numbers.put(Byte.valueOf("110010", 2), '8');
         numbers.put(Byte.valueOf("010100", 2), '9');
-        
+
         symbols.put(Byte.valueOf("010011", 2), '.');
         symbols.put(Byte.valueOf("010000", 2), ',');
         symbols.put(Byte.valueOf("010001", 2), '?');
@@ -102,7 +101,7 @@ public class SimpleBrailleService {
         symbols.put(Byte.valueOf("011011", 2), '(');
         symbols.put(Byte.valueOf("100011", 2), ')');
         symbols.put(Byte.valueOf("001001", 2), '-');
-        
+
     }
 
     public List<Character> getAllPossibleVariants(boolean[] values) {
@@ -122,7 +121,7 @@ public class SimpleBrailleService {
         character = getSymbol(values);
         if (character != null) {
             result.add(character);
-        }        
+        }
         return result;
     }
 
@@ -130,12 +129,12 @@ public class SimpleBrailleService {
         Byte byteRepresentation = getByte(values);
         return russianAlphabet.get(byteRepresentation);
     }
-    
+
     public Character getEnglishLetter(boolean[] values) {
         Byte byteRepresentation = getByte(values);
         return englishAlphabet.get(byteRepresentation);
     }
-    
+
     public Character getNumber(boolean[] values) {
         Byte byteRepresentation = getByte(values);
         return numbers.get(byteRepresentation);
